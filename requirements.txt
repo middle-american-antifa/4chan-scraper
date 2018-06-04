@@ -1,0 +1,2 @@
+appjar
+cx_freeze
