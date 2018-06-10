@@ -24,14 +24,14 @@ def get_image_urls_from_thread(thread_path):
         A list of tuples of the form: (image_url, image_name)
     '''
     images = []
-    partial_image_url = os.path.join(IMAGE_URL, thread_path.split('/')[0])
-    partial_data_url = os.path.join(BASE_URL, thread_path.split('/')[0])
+    partial_image_url = IMAGE_URL + '/' + thread_path.split('/')[0]
+    partial_data_url = BASE_URL + '/' + thread_path.split('/')[0]
     thread_no = ''
     for char in thread_path.split('/')[-1]:
         if not char.isdigit():
             break
         thread_no += char
-    data_url = os.path.join(partial_data_url, 'thread', thread_no + '.json')
+    data_url = partial_data_url + '/thread/' + thread_no + '.json'
     print('fetching ' + data_url)
     t = urllib.request.urlopen(data_url).read()
     print('fetched ' + data_url)
@@ -39,7 +39,7 @@ def get_image_urls_from_thread(thread_path):
     for p in t_data['posts']:
         if not p.get('tim') or not p.get('ext') or not p.get('filename'):
             continue
-        i_url = os.path.join(partial_image_url, '{tim}{ext}'.format(**p))
+        i_url = partial_image_url + '/{tim}{ext}'.format(**p)
         i_name = '{filename}{ext}'.format(**p).replace(' ', '_')
         images.append((i_url, i_name))
     return images
